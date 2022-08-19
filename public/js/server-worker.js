@@ -18,7 +18,17 @@ const files_to_cache = [
 ];
 
 // fetch 
-
+self.addEventListener("fetch", function (e) {
+    e.respondWith(
+      caches.match(e.request).then(function (request) {
+        if (request) {
+          return request;
+        } else {
+          return fetch(e.request);
+        }
+      })
+    );
+  });
 // cache 
 self.addEventListener("install", function (e) {
     e.waitUntil(
